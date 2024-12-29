@@ -48,7 +48,9 @@ export default function LoginForm() {
 
       // Store the token in localStorage
       // localStorage.setItem('token', data.token);
-      dispatch(login({ token: data.data.token, user: data.data }));
+      dispatch(
+        login({ token: data.data.token, user: data.data, userType: userType })
+      );
 
       // Redirect based on user type
       navigate(userType === 'patient' ? '/appointments' : '/doctor/dashboard');

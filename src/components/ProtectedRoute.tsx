@@ -12,15 +12,17 @@ export default function ProtectedRoute({
   children,
   allowedUserTypes,
 }: ProtectedRouteProps) {
-  const { user, token } = useSelector((state: RootState) => state.auth);
-  const { isAuthenticated, userType, loading } = useAuth();
+  const { isAuthenticated, userType } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const { loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!token) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

@@ -8,7 +8,7 @@ import BaseUrl from '../../api/BaseUrl';
 import { RootState } from '../../app/store';
 import { useAppSelector } from '../../app/hooks';
 
-import avater from '../../../assets/avater.jpg';
+import avater from '../../../assets/avater.png';
 
 export default function DoctorProfilePage() {
   const { id } = useParams<{ id: string }>();

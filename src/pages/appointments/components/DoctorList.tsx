@@ -5,7 +5,7 @@ import { RootState } from '../../../app/store';
 import BaseUrl from '../../../api/BaseUrl';
 import axios from 'axios';
 
-import avater from '../../../../assets/avater.jpg';
+import avater from '../../../../assets/avater.png';
 export default function DoctorList() {
   const { user, token } = useSelector((state: RootState) => state.auth);
 

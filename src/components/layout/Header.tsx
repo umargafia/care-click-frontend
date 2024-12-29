@@ -2,15 +2,19 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { RootState } from '../../app/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../app/counterSlice';
 
 export default function Header() {
-  const { user, token } = useSelector((state: RootState) => state.auth);
-  const { isAuthenticated, userType, logout } = useAuth();
+  const { userType, isAuthenticated } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    dispatch(logout());
     navigate('/login');
   };
 
@@ -25,7 +29,7 @@ export default function Header() {
           </div>
 
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            {!token ? (
+            {!isAuthenticated ? (
               // Show these items when user is not authenticated
               <div className="flex space-x-4">
                 <Link
