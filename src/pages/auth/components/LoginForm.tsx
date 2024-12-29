@@ -1,19 +1,77 @@
 import React, { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios, { AxiosError } from 'axios';
+import BaseUrl from '../../../api/BaseUrl';
+import { login } from '../../../app/counterSlice';
+import { useDispatch } from 'react-redux';
 
 export default function LoginForm() {
   const [userType, setUserType] = useState<'patient' | 'doctor'>('patient');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError('');
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, handle authentication here
-    navigate(userType === 'patient' ? '/profile' : '/doctor/dashboard');
+    setError('');
+
+    try {
+      setLoading(true);
+      const endpoint =
+        userType === 'patient' ? 'auth/login/user' : 'auth/login/doctor';
+
+      const response = await axios.post(BaseUrl + endpoint, {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      const data = response.data;
+
+      console.log(data);
+      if (data.status !== 'success') {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Store the token in localStorage
+      // localStorage.setItem('token', data.token);
+      dispatch(login({ token: data.data.token, user: data.data }));
+
+      // Redirect based on user type
+      navigate(userType === 'patient' ? '/appointments' : '/doctor/dashboard');
+    } catch (err: any) {
+      setError(
+        err instanceof AxiosError
+          ? err.response?.data?.message || 'Invalid credentials'
+          : 'Something went wrong'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
+      {loading && <div className="text-center">Loading...</div>}
+      {error && (
+        <div className="p-3 text-sm text-red-600 bg-red-100 rounded-md">
+          {error}
+        </div>
+      )}
+
       <div className="flex rounded-md shadow-sm">
         <button
           type="button"
@@ -40,7 +98,10 @@ export default function LoginForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
           Email address
         </label>
         <div className="mt-1 relative rounded-md shadow-sm">
@@ -52,6 +113,8 @@ export default function LoginForm() {
             name="email"
             type="email"
             required
+            value={formData.email}
+            onChange={handleChange}
             className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
             placeholder="you@example.com"
           />
@@ -59,7 +122,10 @@ export default function LoginForm() {
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700"
+        >
           Password
         </label>
         <div className="mt-1 relative rounded-md shadow-sm">
@@ -71,6 +137,8 @@ export default function LoginForm() {
             name="password"
             type="password"
             required
+            value={formData.password}
+            onChange={handleChange}
             className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
           />
         </div>
@@ -84,13 +152,19 @@ export default function LoginForm() {
             type="checkbox"
             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
-          <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+          <label
+            htmlFor="remember-me"
+            className="ml-2 block text-sm text-gray-900"
+          >
             Remember me
           </label>
         </div>
 
         <div className="text-sm">
-          <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
+          <Link
+            to="/forgot-password"
+            className="font-medium text-blue-600 hover:text-blue-500"
+          >
             Forgot password?
           </Link>
         </div>
@@ -99,15 +173,19 @@ export default function LoginForm() {
       <div>
         <button
           type="submit"
+          disabled={loading}
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Sign in
+          {loading ? 'Signing in...' : 'Sign in'}
         </button>
       </div>
 
       <div className="text-sm text-center">
         <span className="text-gray-600">Don't have an account?</span>{' '}
-        <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
+        <Link
+          to="/signup"
+          className="font-medium text-blue-600 hover:text-blue-500"
+        >
           Sign up
         </Link>
       </div>
