@@ -53,6 +53,7 @@ export default function LoginForm() {
       // Redirect based on user type
       navigate(userType === 'patient' ? '/appointments' : '/doctor/dashboard');
     } catch (err: any) {
+      console.log(err);
       setError(
         err instanceof AxiosError
           ? err.response?.data?.message || 'Invalid credentials'
