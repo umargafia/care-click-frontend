@@ -1,46 +1,41 @@
-import React from 'react';
-import { Star } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
+import BaseUrl from '../../../api/BaseUrl';
+import axios from 'axios';
 
-const doctors = [
-  {
-    id: 1,
-    name: 'Dr. Sarah Wilson',
-    specialty: 'Cardiologist',
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300&h=300',
-  },
-  {
-    id: 2,
-    name: 'Dr. Michael Chen',
-    specialty: 'Neurologist',
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=300&h=300',
-  },
-];
-
+import avater from '../../../../assets/avater.jpg';
 export default function DoctorList() {
+  const { user, token } = useSelector((state: RootState) => state.auth);
+
+  const [doctors, setDoctors] = useState([]);
+  const getAvailableDoctors = async () => {
+    const response = await axios.get(`${BaseUrl}doctors/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setDoctors(response?.data?.data);
+  };
+  useEffect(() => {
+    getAvailableDoctors();
+  }, []);
   return (
     <div className="space-y-4">
       {doctors.map((doctor) => (
-        <Link
-          key={doctor.id}
-          to={`/doctor/${doctor.id}`}
-          className="block"
-        >
+        <Link key={doctor._id} to={`/doctor/${doctor._id}`} className="block">
           <div className="flex items-center space-x-4 p-4 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer transition-colors">
             <img
-              src={doctor.image}
+              src={doctor.image || avater}
               alt={doctor.name}
               className="w-16 h-16 rounded-full object-cover"
             />
             <div>
               <h3 className="font-medium text-gray-900">{doctor.name}</h3>
-              <p className="text-sm text-gray-500">{doctor.specialty}</p>
-              <div className="flex items-center mt-1">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <span className="text-sm text-gray-600 ml-1">{doctor.rating}</span>
-              </div>
+              <p className="text-sm text-gray-500 capitalize">
+                {doctor.specialization}
+              </p>
             </div>
           </div>
         </Link>

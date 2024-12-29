@@ -1,22 +1,32 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import authService from '../services/auth.service';
+import { useAuth } from '../context/AuthContext';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/store';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  roles?: string[];
+  allowedUserTypes?: ('patient' | 'doctor')[];
 }
 
-export default function ProtectedRoute({ children, roles }: ProtectedRouteProps) {
-  const user = authService.getCurrentUser();
+export default function ProtectedRoute({
+  children,
+  allowedUserTypes,
+}: ProtectedRouteProps) {
+  const { user, token } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, userType, loading } = useAuth();
   const location = useLocation();
 
-  if (!user) {
-    return <Navigate to="/auth/login" state={{ from: location }} replace />;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  if (roles && !roles.includes(user.role)) {
-    return <Navigate to="/unauthorized" replace />;
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (allowedUserTypes && userType && !allowedUserTypes.includes(userType)) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
-} 
+}
