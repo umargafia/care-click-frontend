@@ -54,6 +54,12 @@ export default function Header() {
                       to="/appointments"
                       className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                     >
+                      Book Appointment
+                    </Link>
+                    <Link
+                      to="/doctor/appointments"
+                      className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                    >
                       My Appointments
                     </Link>
                     <Link

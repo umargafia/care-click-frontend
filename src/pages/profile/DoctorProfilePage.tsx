@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Star, Clock, Award, Calendar } from 'lucide-react';
+import { Star, Clock, Award, Calendar, Loader } from 'lucide-react';
 import AvailabilityCalendar from './components/AvailabilityCalendar';
 import ReviewsList from './components/ReviewsList';
 import axios from 'axios';
@@ -19,16 +19,20 @@ export default function DoctorProfilePage() {
 
   const getDoctor = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${BaseUrl}doctors/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
       setDoctor(response?.data?.data?.doctor);
 
       setLoading(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,12 +40,10 @@ export default function DoctorProfilePage() {
     getDoctor();
   }, []);
 
-  if (!doctor) {
+  if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Doctor not found</h2>
-        </div>
+      <div className="flex justify-center items-center h-56">
+        <Loader className="animate-spin text-blue-500" />
       </div>
     );
   }
