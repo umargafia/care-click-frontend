@@ -24,7 +24,7 @@ export default function Header() {
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0">
             <Link to="/" className="text-xl font-bold text-blue-600">
-              CareClick
+              CareClik
             </Link>
           </div>
 
