@@ -43,16 +43,45 @@ function App() {
               />
               <Route path="/login" element={<AuthPage type="login" />} />
               <Route path="/signup" element={<AuthPage type="signup" />} />
-              <Route path="/profile" element={<UserProfilePage />} />
-              <Route path="/doctor/:id" element={<DoctorProfilePage />} />
-              <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <UserProfilePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/doctor/:id"
+                element={
+                  <ProtectedRoute>
+                    <DoctorProfilePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/doctor/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <DoctorDashboard />{' '}
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/doctor/appointments"
-                element={<DoctorAppointments />}
+                element={
+                  <ProtectedRoute>
+                    <DoctorAppointments />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="/doctor/consultation/:appointmentId"
-                element={<VideoConsultation />}
+                element={
+                  <ProtectedRoute>
+                    <VideoConsultation />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="/appointments"

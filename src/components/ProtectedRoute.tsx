@@ -1,7 +1,9 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/store';
+import { useEffect } from 'react';
+import { login } from '../app/counterSlice';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -17,6 +19,19 @@ export default function ProtectedRoute({
   );
   const { loading } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      const users = JSON.parse(localStorage.getItem('user') || '{}');
+      const userType = localStorage.getItem('userType') as 'patient' | 'doctor';
+      if (users && userType) {
+        dispatch(login({ user: users, token: users.token, userType }));
+      } else {
+        navigate('/login');
+      }
+    }
+  }, [isAuthenticated]);
 
   if (loading) {
     return <div>Loading...</div>;

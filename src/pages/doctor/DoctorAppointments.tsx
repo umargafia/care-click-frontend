@@ -51,21 +51,30 @@ export default function DoctorAppointments() {
     'all'
   );
 
-  const { user, token } = useSelector((state: RootState) => state.auth);
+  const { userType, token, user } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
   const getAppointments = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `${BaseUrl}appointments/patient?limit=2`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      let response;
+      userType === 'patient'
+        ? (response = await axios.get(`${BaseUrl}appointments/patient`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }))
+        : (response = await axios.get(
+            `${BaseUrl}appointments/doctor/${user._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ));
       console.log(response?.data?.data);
       setAppointments(response?.data?.data);
     } catch (error) {

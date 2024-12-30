@@ -46,8 +46,9 @@ export default function LoginForm() {
         throw new Error(data.message || 'Login failed');
       }
 
-      // Store the token in localStorage
-      // localStorage.setItem('token', data.token);
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('user', JSON.stringify(data.data));
+
       dispatch(
         login({ token: data.data.token, user: data.data, userType: userType })
       );

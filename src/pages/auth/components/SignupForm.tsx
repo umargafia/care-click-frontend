@@ -3,6 +3,8 @@ import { Mail, Lock, User, Stethoscope } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import BaseUrl from '../../../api/BaseUrl';
+import { useDispatch } from 'react-redux';
+import { login } from '../../../app/counterSlice';
 
 export default function SignupForm() {
   const [userType, setUserType] = useState<'patient' | 'doctor'>('patient');
@@ -16,6 +18,7 @@ export default function SignupForm() {
   const [error, setError] = useState<any>('');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError('');
@@ -55,8 +58,11 @@ export default function SignupForm() {
       }
 
       // Store the token in localStorage
-      localStorage.setItem('token', data.token);
-
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('user', JSON.stringify(data.data));
+      dispatch(
+        login({ token: data.data.token, user: data.data, userType: userType })
+      );
       // Redirect based on user type
       navigate(userType === 'patient' ? '/appointments' : '/doctor/dashboard');
     } catch (err: any) {
