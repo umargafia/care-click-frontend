@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import axios from 'axios';
 import BaseUrl from '../../../api/BaseUrl';
+import { formatDate } from '../../../components/formatTime';
+import { formatTime } from '../../../components/formatTime';
 
 const appointments = [
   {
@@ -58,19 +60,7 @@ export default function AppointmentHistory() {
       </div>
     );
   }
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  };
-  const formatTime = (time: string) => {
-    return new Date(time).toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-    });
-  };
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-xl font-semibold mb-4">Appointment History</h2>

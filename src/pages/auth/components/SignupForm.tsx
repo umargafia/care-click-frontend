@@ -44,7 +44,7 @@ export default function SignupForm() {
         email: formData.email,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
-        ...(userType === 'doctor' && { specialty: formData.specialty }),
+        ...(userType === 'doctor' && { specialization: formData.specialty }),
       });
       setLoading(false);
       const data = response.data;
