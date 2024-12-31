@@ -4,7 +4,7 @@ import { Star, ThumbsUp } from 'lucide-react';
 const reviews = [
   {
     id: 1,
-    name: 'John Doe',
+    name: 'Fatima Kabir',
     rating: 5,
     date: '2024-03-10',
     comment: 'Excellent doctor! Very thorough and professional.',
@@ -12,7 +12,7 @@ const reviews = [
   },
   {
     id: 2,
-    name: 'Jane Smith',
+    name: 'Abubakar Sani',
     rating: 4,
     date: '2024-03-05',
     comment: 'Great experience overall. Would recommend.',
@@ -35,11 +35,15 @@ export default function ReviewsList() {
                     <Star
                       key={i}
                       className={`h-4 w-4 ${
-                        i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                        i < review.rating
+                          ? 'text-yellow-400 fill-current'
+                          : 'text-gray-300'
                       }`}
                     />
                   ))}
-                  <span className="text-sm text-gray-500 ml-2">{review.date}</span>
+                  <span className="text-sm text-gray-500 ml-2">
+                    {review.date}
+                  </span>
                 </div>
               </div>
             </div>

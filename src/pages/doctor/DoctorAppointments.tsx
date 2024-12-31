@@ -22,7 +22,7 @@ interface Appointment {
 const appointments: Appointment[] = [
   {
     id: 1,
-    patientName: 'Sarah Johnson',
+    patientName: 'Musa Isa',
     date: '2024-03-20',
     time: '10:00 AM',
     type: 'virtual',
@@ -30,7 +30,7 @@ const appointments: Appointment[] = [
   },
   {
     id: 2,
-    patientName: 'Michael Brown',
+    patientName: 'AbdulKarim',
     date: '2024-03-20',
     time: '11:30 AM',
     type: 'in-person',
@@ -38,7 +38,7 @@ const appointments: Appointment[] = [
   },
   {
     id: 3,
-    patientName: 'Emily Davis',
+    patientName: 'Aisha kabir',
     date: '2024-03-19',
     time: '3:00 PM',
     type: 'virtual',
