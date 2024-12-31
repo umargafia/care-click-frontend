@@ -4,19 +4,19 @@ import { Calendar, Users, Clock } from 'lucide-react';
 const stats = [
   {
     title: "Today's Appointments",
-    value: 8,
+    value: 2,
     icon: Calendar,
     color: 'bg-blue-500',
   },
   {
     title: 'Total Patients',
-    value: 145,
+    value: 5,
     icon: Users,
     color: 'bg-green-500',
   },
   {
     title: 'Pending Appointments',
-    value: 12,
+    value: 3,
     icon: Clock,
     color: 'bg-yellow-500',
   },

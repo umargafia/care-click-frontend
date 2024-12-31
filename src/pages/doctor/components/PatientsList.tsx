@@ -4,13 +4,13 @@ import { User } from 'lucide-react';
 const patients = [
   {
     id: 1,
-    name: 'Sarah Johnson',
+    name: 'umar musa',
     age: 32,
     lastVisit: '2024-03-15',
   },
   {
     id: 2,
-    name: 'Michael Brown',
+    name: 'Abdulrahaman Musa',
     age: 45,
     lastVisit: '2024-03-10',
   },

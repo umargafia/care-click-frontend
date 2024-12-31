@@ -5,14 +5,14 @@ import { Link } from 'react-router-dom';
 const appointments = [
   {
     id: 1,
-    patientName: 'Sarah Johnson',
+    patientName: 'Umar Musa',
     time: '10:00 AM',
     type: 'virtual',
     status: 'upcoming',
   },
   {
     id: 2,
-    patientName: 'Michael Brown',
+    patientName: 'Abdulrahaman Musa',
     time: '11:30 AM',
     type: 'in-person',
     status: 'upcoming',
