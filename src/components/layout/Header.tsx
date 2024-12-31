@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { RootState } from '../../app/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../app/counterSlice';
 
+import { logout } from '../../app/counterSlice';
+import logo from '../../../assets/logo.jpg';
 export default function Header() {
   const { userType, isAuthenticated } = useSelector(
     (state: RootState) => state.auth
@@ -24,7 +25,7 @@ export default function Header() {
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0">
             <Link to="/" className="text-xl font-bold text-blue-600">
-              CareClik
+              <img src={logo} className="w-32 h-10" alt="logo" />
             </Link>
           </div>
 

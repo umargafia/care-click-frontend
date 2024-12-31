@@ -69,7 +69,7 @@ export default function LoginForm() {
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
-      {loading && <div className="text-center">Loading...</div>}
+     
       {error && (
         <div className="p-3 text-sm text-red-600 bg-red-100 rounded-md">
           {error}
